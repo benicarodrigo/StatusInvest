@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup as bs
 from selenium import webdriver
 from time import sleep
 import pandas as pd
+from os import path
+from platform import system
 
 
 lst_nome_ativo = []
@@ -11,14 +13,23 @@ lst_valor_minimo = []
 lst_fechamento = []
 lst_volume = []
 
+so = system()
+
+
 count = 0
 df_emp_alta = pd.DataFrame(columns=['Emresa', 'Valor Abertura', 'Valor Maximo', 'Valor Minimo', 'Fechamento', 'Volume'])
 df_emp_baixa = pd.DataFrame(columns=['Emresa', 'Valor Abertura', 'Valor Maximo', 'Valor Minimo', 'Fechamento', 'Volume'])
 url = 'https://statusinvest.com.br/acoes/variacao/ibov'
-path = 'C:\\Users\\RodrigoCoelhoBenicá\\PycharmProjects\\selenium_beautfulsoup\\chromedriver.exe'
+path = path.dirname(__file__)
+
+if so == 'Linux':
+    path_driver = path + '/chromedriver'
+else:
+    path_driver = path + '/chromedriver.exe'
 
 
-driver_gc = webdriver.Chrome(path)
+
+driver_gc = webdriver.Chrome(path_driver)
 driver_gc.get(url)
 sleep(3)
 bs_obj_url = bs(driver_gc.page_source, 'html.parser')
